@@ -27,7 +27,6 @@
   }
   let rawData = []
 
-  // 顯示導覽列
   let navHTML = ``
   for (item in genres) {
     navHTML += `
@@ -38,11 +37,9 @@
   }
   nav.innerHTML = navHTML
 
-  // 取得資料
   axios.get(BASE_URL + INDEX + 'movies')
     .then((response) => {
       rawData = response.data.results
-      // 預設 hilight Action
       nav.firstElementChild
         .firstElementChild.classList.add('active')
 
@@ -83,23 +80,18 @@
     const genresId = Number(genresNumber)
     console.log(genresId)
     const result = rawData.filter(item => {
-      // 電影是否包含該類型
       const isGenres = item.genres.some(item => { return item === genresId })
       return isGenres
     })
     return result
   }
 
-  // hilight 所選的導覽項目
   nav.addEventListener('click', () => {
-    // 先清除所有 active class
     const navLinkArray = document.querySelectorAll('.nav-link')
     navLinkArray.forEach(item => {
       item.classList.remove('active')
     })
-    // hilight 選項
     event.target.classList.add('active')
-    // filter display
     const genresId = event.target.dataset.id
     const filterData = filterDataByGenres(genresId)
     displayMovies(filterData)
